@@ -1,0 +1,161 @@
+package com.snorck.calc;
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Main {
+    public static String toRoman(int arabicInt){
+        String [] ones = new String[]{"","I","II","III","IV","V","VI","VII","VIII","IX"};
+        String [] tens = new String[]{"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"};
+        String [] hunds = new String[]{"","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"};
+        String [] thous = new String[]{"","M","MM","MMM","MMMM"};
+
+        String t = thous[arabicInt / 1000];
+        String h = hunds[arabicInt / 100 % 10];
+        String te = tens[arabicInt / 10 % 10];
+        String o =  ones[arabicInt % 10];
+        return t+h+te+o;
+    }
+    public static String calc(String input){
+
+            boolean workWithRoman;
+            String [] operandsArray = new String[] {"+", "-", "/", "*"};
+            String [] romanArray = new String[] {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+            String [] arabicArray = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+
+            String[] operands = input.split("\\s");
+
+            //System.out.println(operands.length);
+            if(operands.length != 3) try {
+                throw new Exception("Неверная запись");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            if (!Arrays.asList(operandsArray).contains(operands[1])) try {
+                throw new Exception("Неверная запись");
+            } catch (Exception e){
+                throw new RuntimeException(e);
+            }
+
+            if(Arrays.asList(romanArray).contains(operands[0]) && Arrays.asList(romanArray).contains(operands[2])){
+                //System.out.println("будем работать с римскими цифрами");
+                workWithRoman = true;
+
+            }
+            else if (Arrays.asList(arabicArray).contains(operands[0]) && Arrays.asList(arabicArray).contains(operands[2])){
+                //System.out.println("будем работать с арабскими цифрами");
+                workWithRoman = false;
+            }
+            else {
+                try {
+                    throw new Exception("Разные операнды");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            switch (operands[1]){
+                case("+"):
+                    System.out.println("будем складывать ");
+                    if(workWithRoman) {
+                        int firstOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[0])]);
+                        int secondOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[2])]);
+                        int result = firstOperand + secondOperand;
+                        // System.out.println(toRoman(result));
+                        return toRoman(result);
+
+                    }else {
+                        int firstOperand = Integer.parseInt(operands[0]);
+                        int secondOperand = Integer.parseInt(operands[2]);
+                        int result = firstOperand + secondOperand;
+                        //System.out.println(result);
+                        return String.valueOf(result);
+                    }
+
+                    //break;
+                case("-"):
+                    System.out.println("будем вычитать ");
+                    if(workWithRoman) {
+                        int firstOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[0])]);
+                        int secondOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[2])]);
+                        if (firstOperand > secondOperand) {
+                            int result = firstOperand - secondOperand;
+
+                            //System.out.println(toRoman(result));
+                            return toRoman(result);
+                        }else {
+                            try {
+                                throw new Exception("результат меньше либо равен нулю");
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+                    }else {
+                        int firstOperand = Integer.parseInt(operands[0]);
+                        int secondOperand = Integer.parseInt(operands[2]);
+                        int result = firstOperand - secondOperand;
+                        //System.out.println(result);
+                        return String.valueOf(result);
+                    }
+                    //break;
+                case("/"):
+                    System.out.println("будем делить ");
+                    if(workWithRoman) {
+                        int firstOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[0])]);
+                        int secondOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[2])]);
+                        if (firstOperand > secondOperand) {
+                            int result = firstOperand / secondOperand;
+
+                            //System.out.println(toRoman(result));
+                            return toRoman(result);
+                        }else {
+                            try {
+                                throw new Exception("результат меньше единицы");
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+                    }else {
+                        int firstOperand = Integer.parseInt(operands[0]);
+                        int secondOperand = Integer.parseInt(operands[2]);
+                        int result = firstOperand / secondOperand;
+                        //System.out.println(result);
+                        return String.valueOf(result);
+                    }
+                    //break;
+                case("*"):
+                    System.out.println("будем умножать ");
+                    if(workWithRoman) {
+                        int firstOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[0])]);
+                        int secondOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[2])]);
+                        int result = firstOperand * secondOperand;
+                        //System.out.println(toRoman(result));
+                        return toRoman(result);
+
+                    }else {
+                        int firstOperand = Integer.parseInt(operands[0]);
+                        int secondOperand = Integer.parseInt(operands[2]);
+                        int result = firstOperand * secondOperand;
+                        System.out.println(result);
+                        return String.valueOf(result);
+                    }
+                    //break;
+                default:
+                    try {
+                        throw new Exception("Неверный оператор");
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+            }
+
+    }
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Введите пример: ");
+        String userInput = sc.nextLine();
+        System.out.println(calc(userInput));
+
+    }
+}
