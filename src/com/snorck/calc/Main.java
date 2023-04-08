@@ -18,6 +18,10 @@ public class Main {
     public static String calc(String input){
 
             boolean workWithRoman;
+            int firstOperand;
+            int secondOperand;
+            int result;
+
             String [] operandsArray = new String[] {"+", "-", "/", "*"};
             String [] romanArray = new String[] {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
             String [] arabicArray = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
@@ -53,9 +57,6 @@ public class Main {
                     throw new RuntimeException(e);
                 }
             }
-            int firstOperand;
-            int secondOperand;
-            int result;
 
             if(workWithRoman) {
                 firstOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[0])]);
@@ -65,10 +66,9 @@ public class Main {
                 secondOperand = Integer.parseInt(operands[2]);
             }
 
-
             switch (operands[1]){
                 case("+"):
-                    System.out.println("будем складывать ");
+                    //System.out.println("будем складывать ");
                     result = firstOperand + secondOperand;
                     if(workWithRoman) {
                         return toRoman(result);
@@ -78,7 +78,7 @@ public class Main {
 
                     //break;
                 case("-"):
-                    System.out.println("будем вычитать ");
+                    //System.out.println("будем вычитать ");
                     result = firstOperand - secondOperand;
                     if((workWithRoman) && (result > 0)){
                         return toRoman(result);
@@ -90,43 +90,31 @@ public class Main {
                             }
 
                         }else {
-                        //System.out.println(result);
                         return String.valueOf(result);
                     }
                     //break;
                 case("/"):
-                    System.out.println("будем делить ");
+                    //System.out.println("будем делить ");
                     result = firstOperand / secondOperand;
-                    if(workWithRoman) {
-
-                        if (firstOperand > secondOperand) {
-
-
-                            //System.out.println(toRoman(result));
-                            return toRoman(result);
-                        }else {
+                    if((workWithRoman) && (firstOperand > secondOperand)) {
+                        return toRoman(result);
+                    } else if (firstOperand < secondOperand){
                             try {
                                 throw new Exception("результат меньше единицы");
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
 
-                        }
-                    }else {
-
-                        //System.out.println(result);
+                        } else {
                         return String.valueOf(result);
                     }
                     //break;
                 case("*"):
-                    System.out.println("будем умножать ");
+                    //System.out.println("будем умножать ");
                     result = firstOperand * secondOperand;
                     if(workWithRoman) {
-
                         return toRoman(result);
-
                     }else {
-
                         return String.valueOf(result);
                     }
                     //break;
@@ -140,11 +128,9 @@ public class Main {
 
     }
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите пример: ");
         String userInput = sc.nextLine();
         System.out.println(calc(userInput));
-
     }
 }
