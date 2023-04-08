@@ -22,7 +22,7 @@ public class Main {
             String [] romanArray = new String[] {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
             String [] arabicArray = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
-            String[] operands = input.split("\\s");
+            String [] operands = input.split("\\s");
 
             //System.out.println(operands.length);
             if(operands.length != 3) try {
@@ -32,7 +32,7 @@ public class Main {
             }
 
             if (!Arrays.asList(operandsArray).contains(operands[1])) try {
-                throw new Exception("Неверная запись");
+                throw new Exception("Неверная запись, неверный оператор");
             } catch (Exception e){
                 throw new RuntimeException(e);
             }
@@ -53,58 +53,54 @@ public class Main {
                     throw new RuntimeException(e);
                 }
             }
+            int firstOperand;
+            int secondOperand;
+            int result;
+
+            if(workWithRoman) {
+                firstOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[0])]);
+                secondOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[2])]);
+            }else {
+                firstOperand = Integer.parseInt(operands[0]);
+                secondOperand = Integer.parseInt(operands[2]);
+            }
+
+
             switch (operands[1]){
                 case("+"):
                     System.out.println("будем складывать ");
+                    result = firstOperand + secondOperand;
                     if(workWithRoman) {
-                        int firstOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[0])]);
-                        int secondOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[2])]);
-                        int result = firstOperand + secondOperand;
-                        // System.out.println(toRoman(result));
                         return toRoman(result);
-
                     }else {
-                        int firstOperand = Integer.parseInt(operands[0]);
-                        int secondOperand = Integer.parseInt(operands[2]);
-                        int result = firstOperand + secondOperand;
-                        //System.out.println(result);
                         return String.valueOf(result);
                     }
 
                     //break;
                 case("-"):
                     System.out.println("будем вычитать ");
-                    if(workWithRoman) {
-                        int firstOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[0])]);
-                        int secondOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[2])]);
-                        if (firstOperand > secondOperand) {
-                            int result = firstOperand - secondOperand;
-
-                            //System.out.println(toRoman(result));
-                            return toRoman(result);
-                        }else {
+                    result = firstOperand - secondOperand;
+                    if((workWithRoman) && (result > 0)){
+                        return toRoman(result);
+                        }else if (result < 1){
                             try {
                                 throw new Exception("результат меньше либо равен нулю");
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
 
-                        }
-                    }else {
-                        int firstOperand = Integer.parseInt(operands[0]);
-                        int secondOperand = Integer.parseInt(operands[2]);
-                        int result = firstOperand - secondOperand;
+                        }else {
                         //System.out.println(result);
                         return String.valueOf(result);
                     }
                     //break;
                 case("/"):
                     System.out.println("будем делить ");
+                    result = firstOperand / secondOperand;
                     if(workWithRoman) {
-                        int firstOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[0])]);
-                        int secondOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[2])]);
+
                         if (firstOperand > secondOperand) {
-                            int result = firstOperand / secondOperand;
+
 
                             //System.out.println(toRoman(result));
                             return toRoman(result);
@@ -117,27 +113,20 @@ public class Main {
 
                         }
                     }else {
-                        int firstOperand = Integer.parseInt(operands[0]);
-                        int secondOperand = Integer.parseInt(operands[2]);
-                        int result = firstOperand / secondOperand;
+
                         //System.out.println(result);
                         return String.valueOf(result);
                     }
                     //break;
                 case("*"):
                     System.out.println("будем умножать ");
+                    result = firstOperand * secondOperand;
                     if(workWithRoman) {
-                        int firstOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[0])]);
-                        int secondOperand = Integer.parseInt(arabicArray[Arrays.asList(romanArray).indexOf(operands[2])]);
-                        int result = firstOperand * secondOperand;
-                        //System.out.println(toRoman(result));
+
                         return toRoman(result);
 
                     }else {
-                        int firstOperand = Integer.parseInt(operands[0]);
-                        int secondOperand = Integer.parseInt(operands[2]);
-                        int result = firstOperand * secondOperand;
-                        System.out.println(result);
+
                         return String.valueOf(result);
                     }
                     //break;
